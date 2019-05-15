@@ -1,0 +1,20 @@
+import numpy as np
+from sklearn import preprocessing, cross_validation, neighbors
+import pandas as pd
+
+df = pd.read_csv('PJMDATA.csv',encoding='latin1')       # import CSV file, SQL script can be used instead to laoad data from DB
+df.replace('?', -99999, inplace= True)
+df.fillna(-99999, inplace=True)
+
+X = np.array(df.drop(['WESTERN HUB DA LMP'], 1))
+y = np.array(df['WESTERN HUB DA LMP'])
+
+X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size=0.1)
+
+clf = neighbors.KNeighborsClassifier()
+clf.fit(X_train, y_train)
+
+accuracy = clf.score(X_test, y_test)
+print(accuracy)
+
+example_measures = np.array([[]])
